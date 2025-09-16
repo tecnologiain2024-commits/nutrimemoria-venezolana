@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriMemoria Venezolana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: 
+                url('img/fondo.png');
+            background-size: 300px 300px;
+            animation: moveBackground 10s linear infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        @keyframes moveBackground {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 300px 300px;
+            }
+        }
+        
+        .main-container {
+            display: flex;
+            gap: 25px;
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+        
+        .container {
+            width: 70%;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .facts-sidebar {
+            width: 30%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(to bottom, #5da45faf, #4caf4f97);
+            color: white;
+            max-height: 800px;
+        }
+        
+        .header-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #4caf50 0%, #8bc34a 50%, #cddc39 100%);
+        }
+        
+        h1 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: #388e3c;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.4rem;
+        }
+        
+        p {
+            color: #000000;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #a5d6a7;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f1f8e9;
+        }
+        
+        input:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(to right, #4caf50, #8bc34a);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 10px 6px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        button.secondary {
+            background: linear-gradient(to right, #78909c, #b0bec5);
+        }
+        
+        button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(120, 144, 156, 0.4);
+        }
+        
+        button.success {
+            background: linear-gradient(to right, #ff9800, #ffb74d);
+        }
+        
+        button.success:hover {
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        .game-board {
+            display: grid;
+            grid-gap: 10px;
+            margin: 20px auto;
+            justify-content: center;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        .card {
+            width: 100px;
+            height: 100px;
+            background-image: url('img/4s.png');
+            background-size: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('');
+            background-size: cover;
+            opacity: 0.8;
+            z-index: 1;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);
+        }
+        
+        .card.flipped::before {
+            display: none;
+        }
+        
+        .card.matched {
+            background: linear-gradient(135deg, #4fc3f7 0%, #0290c9 100%);
+            cursor: default;
+            transform: scale(0.95);
+        }
+        
+        .card.matched::before {
+            display: none;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stats div {
+            color: #2e7d32;
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .level-indicator {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: #e8f5e9;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .leaderboard {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .leaderboard-item {
+            padding: 12px;
+            border-bottom: 1px solid #c8e6c9;
+            display: flex;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .leaderboard-item:hover {
+            background-color: #c8e6c9;
+            border-radius: 8px;
+        }
+        
+        .leaderboard-title {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #81c784;
+            font-size: 1.2rem;
+        }
+        
+        .card-content {
+            font-size: 0;
+            transition: all 0.3s;
+            z-index: 2;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .flipped .card-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .level-progress {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #8bc34a 50%, #cddc39 100%);
+            border-radius: 8px;
+            transition: width 0.5s;
+        }
+        
+        .welcome-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Estilos para el logo */
+        .logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .game-logo {
+            max-width: 120px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .game-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .congratulations {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            border: 4px solid #ffb74d;
+        }
+        
+        .congratulations h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .congratulations p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #4caf50;
+            opacity: 0.7;
+        }
+        
+        .facts-title {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 1.3rem;
+        }
+        
+        .facts-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            max-height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        
+        .fact-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .fact-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .fact-emoji {
+            font-size: 24px;
+            margin-right: 10px;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fact-name {
+            font-weight: 600;
+            color: rgb(0, 0, 0);
+            font-size: 1rem;
+        }
+        
+        .fact-text {
+            color: rgb(0, 0, 0);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .no-facts {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            margin-top: 25px;
+            font-size: 1rem;
+        }
+        
+        .scroll-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 12px;
+        }
+        
+        .scroll-btn {
+            background: rgba(1, 53, 6, 0.325);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .nutrition-tag {
+            display: inline-block;
+            background: linear-gradient(to right, #4caf50, #8bc34a);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* Control de sonido */
+        .sound-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            font-size: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fall {
+            from { transform: translateY(-100px) rotate(0deg); }
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+        
+        /* Scrollbar personalizado */
+        .facts-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .facts-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .facts-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+        
+        .facts-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Media queries para responsividad */
+        @media (max-width: 1100px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .container, .facts-sidebar {
+                width: 100%;
+            }
+            
+            .facts-sidebar {
+                max-height: 350px;
+            }
+            
+            .game-board {
+                grid-gap: 8px;
+            }
+            
+            .card {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .game-logo {
+                max-width: 180px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .card {
+                width: 80px;
+            height: 80px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            .game-logo {
+                max-width: 160px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .stats div {
+                min-width: auto;
+            }
+            
+            button {
+                padding: 10px 20px;
+                margin: 8px 4px;
+                font-size: 13px;
+            }
+            
+            .main-container {
+                max-width: 95%;
+            }
+            
+            .card {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .game-logo {
+                max-width: 140px;
+            }
+            
+            .sound-control {
+                top: 15px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .card {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .game-board {
+                grid-gap: 6px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .level-indicator {
+                font-size: 1.1rem;
+                padding: 8px 12px;
+            }
+            
+            .facts-sidebar {
+                padding: 15px;
+            }
+            
+            .game-logo {
+                max-width: 120px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .game-board {
+                grid-gap: 5px;
+            }
+            
+            .container {
+                padding: 15px 10px;
+            }
+            
+            .facts-sidebar {
+                padding: 12px;
+            }
+            
+            .fact-item {
+                padding: 10px;
+            }
+            
+            .fact-emoji {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+            
+            button {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .game-logo {
+                max-width: 100px;
+            }
+            
+            .sound-control {
+                top: 10px;
+                right: 10px;
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .card {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .game-board {
+                grid-gap: 4px;
+            }
+            
+            .stats div {
+                font-size: 0.9rem;
+            }
+            
+            .game-logo {
+                max-width: 90px;
+            }
+        }
+        
+        /* Clases para ajustar el tamaño de las cartas según el nivel */
+        .level-1-cards .card {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .level-2-cards .card {
+            width: 110px;
+            height: 110px;
+        }
+        
+        .level-3-cards .card {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .level-4-cards .card {
+            width: 90px;
+            height: 90px;
+        }
+        
+        /* Ajustes para grid en niveles superiores */
+        .compact-grid {
+            grid-gap: 8px;
+        }
+        
+        .very-compact-grid {
+            grid-gap: 6px;
+        }
+    </style>
+
+<!-- Enlace al manifiesto PWA -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Meta tags para iOS -->
+<meta name="theme-color" content="#2e7d32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NutriMemoria">
+<link rel="apple-touch-icon" href="img/inn.png">
+
+</head>
+<body>
+    <!-- Elementos de audio (ocultos) -->
+    <audio id="click-sound" src="sounds/click.mp3" preload="auto"></audio>
+    <audio id="match-sound" src="sounds/match.mp3" preload="auto"></audio>
+    <audio id="complete-sound" src="sounds/complete.mp3" preload="auto"></audio>
+    
+    <!-- Botón de control de sonido -->
+    <button id="sound-toggle" class="sound-control">🔊</button>
+    
+    <div class="main-container">
+        <div class="container">
+            <div class="header-decoration"></div>
+            
+            <!-- Pantalla de registro -->
+            <div id="register-screen" class="screen active">
+                <div class="logo-container">
+                    <img src="img/inn.png" alt="NutriMemoria Venezolana" class="game-logo">
+                </div>
+                <h1>NutriMemoria Venezolana</h1>
+                <p>Descubre los beneficios nutricionales de las frutas y verduras venezolanas mientras ejercitas tu memoria</p>
+                <div class="form-group">
+                    <label for="player-name">Ingresa tu nombre:</label>
+                    <input type="text" id="player-name" placeholder="Tu nombre">
+                </div>
+                <button id="start-game">Comenzar Juego</button>
+                
+                <div class="leaderboard">
+                    <h3 class="leaderboard-title">Mejores Puntuaciones</h3>
+                    <div id="leaderboard-list"></div>
+                </div>
+            </div>
+            
+            <!-- Pantalla de juego -->
+            <div id="game-screen" class="screen">
+                <h2>NutriMemoria Venezolana</h2>
+                <div class="level-indicator">Nivel: <span id="current-level">1</span> de 4</div>
+                
+                <div class="level-progress">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                </div>
+                
+                <div class="stats">
+                    <div>Jugador: <span id="player-display"></span></div>
+                    <div>Pares: <span id="pairs-found">0</span>/<span id="total-pairs">0</span></div>
+                </div>
+                
+                <div id="game-board" class="game-board"></div>
+                
+                <div class="game-controls">
+                    <button id="reset-game" class="secondary">Reiniciar Nivel</button>
+                    <button id="main-menu">Menú Principal</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel lateral de datos nutricionales -->
+        <div id="facts-sidebar" class="facts-sidebar">
+            <h3 class="facts-title">Beneficios Nutricionales</h3>
+            <div id="facts-container" class="facts-container">
+                <p class="no-facts">Encuentra pares para descubrir beneficios nutricionales</p>
+            </div>
+            <div class="scroll-controls">
+                <button class="scroll-btn" onclick="scrollFacts('up')">↑</button>
+                <button class="scroll-btn" onclick="scrollFacts('down')">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de productos venezolanos con datos nutricionales e imágenes
+        const venezuelanProducts = [
+            { 
+                name: "Cambur", 
+                emoji: "🍌", 
+                fact: "Rico en potasio, ayuda a regular la presión arterial y previene calambres musculares.", 
+                nutrition: "Potasio, Vitamina B6",
+                image: "img/cambur.png"
+            },
+            { 
+                name: "Lechosa", 
+                emoji: "🍈", 
+                fact: "Contiene papaína, enzima que ayuda a la digestión y es rica en vitaminas A y C.", 
+                nutrition: "Vitamina A, Vitamina C",
+                image: "img/lechosa.png"
+            },
+            { 
+                name: "Aguacate", 
+                emoji: "🥑", 
+                fact: "Alto contenido de grasas saludables que benefician al corazón y reducen el colesterol.", 
+                nutrition: "Grasas saludables, Fibra",
+                image: "img/aguacate.png"
+            },
+            { 
+                name: "Mango", 
+                emoji: "🥭", 
+                fact: "Excelente fuente de vitamina C and antioxidantes que fortalecen el sistema inmunológico.", 
+                nutrition: "Vitamina C, Antioxidantes",
+                image: "img/mango.png"
+            },
+            { 
+                name: "Pimentón", 
+                emoji: "🫑", 
+                fact: "Rico en vitamina C y antioxidantes que protegen contra el daño celular.", 
+                nutrition: "Vitamina C, Antioxidantes",
+                image: "img/pimenton.png"
+            },
+            { 
+                name: "Tomate", 
+                emoji: "🍅", 
+                fact: "Contiene licopeno, antioxidante que reduces el riesgo de enfermedades cardíacas.", 
+                nutrition: "Licopeno, Vitamina C",
+                image: "img/tomate.png"
+            },
+            { 
+                name: "Cebolla", 
+                emoji: "🧅", 
+                fact: "Tiene propiedades antiinflamatorias y antibacterianas, beneficia la salud cardiovascular.", 
+                nutrition: "Antioxidantes, Quercetina",
+                image: "img/cebolla.png"
+            },
+            { 
+                name: "Yuca", 
+                emoji: "🥔", 
+                fact: "Buena fuente de carbohidratos complejos que proporcionan energía sostenida.", 
+                nutrition: "Carbohidratos, Fibra",
+                image: "img/yuca.png"
+            },
+            { 
+                name: "Ñame", 
+                emoji: "🍠", 
+                fact: "Rico en fibra, potasio y manganeso, favorece la salud digestiva.", 
+                nutrition: "Fibra, Potasio",
+                image: "img/ñame.png"
+            },
+            { 
+                name: "Auyama", 
+                emoji: "🎃", 
+                fact: "Alta en betacaroteno que se convierte en vitamina A, esencial para la visión.", 
+                nutrition: "Betacaroteno, Vitamina A",
+                image: "img/auyama.png"
+            },
+            { 
+                name: "Parchita", 
+                emoji: "🍋", 
+                fact: "Contiene compuestos que promueven la relajación y mejoran la calidad del sueño.", 
+                nutrition: "Alcaloides, Flavonoides",
+                image: "img/parchita.png"
+            },
+            { 
+                name: "Guayaba", 
+                emoji: "🍐", 
+                fact: "Una de las frutas más ricas en vitamina C, fortalece el sistema inmunológico.", 
+                nutrition: "Vitamina C, Fibra",
+                image: "img/guayaba.png"
+            },
+            { 
+                name: "Limón", 
+                emoji: "🍋", 
+                fact: "Alcalinizante natural, ayuda a depurar el organismo y mejora la digestión.", 
+                nutrition: "Vitamina C, Antioxidantes",
+                image: "img/limon.png"
+            },
+            { 
+                name: "Piña", 
+                emoji: "🍍", 
+                fact: "Contiene bromelina, enzima que ayuda a digerir las proteínas y reduce la inflamación.", 
+                nutrition: "Bromelina, Manganeso",
+                image: "img/piña.png"
+            },
+            { 
+                name: "Patilla", 
+                emoji: "🍉", 
+                fact: "Compuesta principalmente por agua, ayuda a mantenerse hidratado y es baja en calorías.", 
+                nutrition: "Agua, Licopeno",
+                image: "img/patilla.png"
+            },
+            { 
+                name: "Caraota", 
+                emoji: "🫘", 
+                fact: "Excelente fuente de proteína vegetal, fibra y hierro para una dieta balanceada.", 
+                nutrition: "Proteína, Fibra, Hierro",
+                image: "img/caraota.png"
+            }
+        ];
+
+        // Configuración de niveles (solo 4 niveles ahora)
+        const levels = [
+            { rows: 2, cols: 2, pairs: 2, cardSize: "level-1-cards", gridClass: "" },   // Nivel 1
+            { rows: 3, cols: 2, pairs: 3, cardSize: "level-2-cards", gridClass: "" },   // Nivel 2
+            { rows: 4, cols: 3, pairs: 6, cardSize: "level-3-cards", gridClass: "compact-grid" },   // Nivel 3
+            { rows: 4, cols: 4, pairs: 8, cardSize: "level-4-cards", gridClass: "compact-grid" }    // Nivel 4 (final)
+        ];
+
+        // Configuración del juego
+        const gameConfig = {
+            maxLevels: 4, // Cambiado de 5 a 4
+            currentLevel: 1,
+            playerName: "",
+            pairsFound: 0,
+            flippedCards: [],
+            matchedPairs: 0,
+            totalPairs: 0,
+            gameActive: false,
+            discoveredFacts: new Set(), // Para evitar duplicados
+            soundEnabled: true // Control de sonido
+        };
+
+        // Almacenamiento de puntuaciones
+        let leaderboard = JSON.parse(localStorage.getItem('nutrimemoriaLeaderboard')) || [];
+
+        // Elementos del DOM
+        const registerScreen = document.getElementById('register-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const playerNameInput = document.getElementById('player-name');
+        const startGameBtn = document.getElementById('start-game');
+        const playerDisplay = document.getElementById('player-display');
+        const pairsFoundDisplay = document.getElementById('pairs-found');
+        const totalPairsDisplay = document.getElementById('total-pairs');
+        const currentLevelDisplay = document.getElementById('current-level');
+        const gameBoard = document.getElementById('game-board');
+        const resetGameBtn = document.getElementById('reset-game');
+        const mainMenuBtn = document.getElementById('main-menu');
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const progressBar = document.getElementById('progress-bar');
+        const factsContainer = document.getElementById('facts-container');
+        const soundToggle = document.getElementById('sound-toggle');
+        
+        // Elementos de audio
+        const clickSound = document.getElementById('click-sound');
+        const matchSound = document.getElementById('match-sound');
+        const completeSound = document.getElementById('complete-sound');
+
+        // Inicializar el juego
+        function initGame() {
+            startGameBtn.addEventListener('click', startGame);
+            resetGameBtn.addEventListener('click', resetGame);
+            mainMenuBtn.addEventListener('click', showMainMenu);
+            soundToggle.addEventListener('click', toggleSound);
+            updateLeaderboard();
+            
+            // Cargar preferencia de sonido
+            const soundPreference = localStorage.getItem('nutrimemoriaSound');
+            if (soundPreference !== null) {
+                gameConfig.soundEnabled = soundPreference === 'true';
+                updateSoundButton();
+            }
+        }
+
+        // Reproducir sonido
+        function playSound(soundElement) {
+            if (gameConfig.soundEnabled) {
+                soundElement.currentTime = 0;
+                soundElement.play().catch(e => console.log("Error reproduciendo sonido:", e));
+            }
+        }
+
+        // Alternar sonido
+        function toggleSound() {
+            gameConfig.soundEnabled = !gameConfig.soundEnabled;
+            localStorage.setItem('nutrimemoriaSound', gameConfig.soundEnabled);
+            updateSoundButton();
+            
+            // Reproducir sonido de prueba al activar
+            if (gameConfig.soundEnabled) {
+                playSound(clickSound);
+            }
+        }
+
+        // Actualizar botón de sonido
+        function updateSoundButton() {
+            soundToggle.textContent = gameConfig.soundEnabled ? '🔊' : '🔇';
+        }
+
+        // Comenzar el juego
+        function startGame() {
+            const name = playerNameInput.value.trim();
+            if (name === "") {
+                alert("Por favor ingresa tu nombre");
+                return;
+            }
+            
+            gameConfig.playerName = name;
+            gameConfig.currentLevel = 1;
+            gameConfig.pairsFound = 0;
+            gameConfig.discoveredFacts.clear();
+            
+            playerDisplay.textContent = gameConfig.playerName;
+            currentLevelDisplay.textContent = gameConfig.currentLevel;
+            
+            registerScreen.classList.remove('active');
+            gameScreen.classList.add('active');
+            
+            // Limpiar datos nutricionales anteriores
+            factsContainer.innerHTML = '<p class="no-facts">Encuentra pares para descubrir beneficios nutricionales</p>';
+            
+            setupGameBoard();
+        }
+
+        // Configurar el tablero de juego
+        function setupGameBoard() {
+            gameBoard.innerHTML = "";
+            const level = levels[gameConfig.currentLevel - 1];
+            
+            // Aplicar clases para el tamaño de cartas y grid según el nivel
+            gameBoard.className = "game-board " + level.cardSize + " " + level.gridClass;
+            
+            // Configurar el grid según el nivel
+            gameBoard.style.gridTemplateColumns = `repeat(${level.cols}, 1fr)`;
+            
+            // Calcular pares necesarios
+            gameConfig.totalPairs = level.pairs;
+            gameConfig.matchedPairs = 0;
+            gameConfig.flippedCards = [];
+            gameConfig.gameActive = true;
+            
+            pairsFoundDisplay.textContent = gameConfig.pairsFound;
+            totalPairsDisplay.textContent = gameConfig.totalPairs;
+            updateProgressBar();
+            
+            // Seleccionar productos aleatorios
+            const products = getRandomProducts(gameConfig.totalPairs);
+            
+            // Crear array de cartas (pares)
+            let cards = [];
+            products.forEach((product, index) => {
+                cards.push({ id: index * 2, product });
+                cards.push({ id: index * 2 + 1, product });
+            });
+            
+            // Barajar cartas
+            cards = shuffleArray(cards);
+            
+            // Crear elementos de cartas
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.id = card.id;
+                cardElement.dataset.product = card.product.name;
+                
+                const cardContent = document.createElement('div');
+                cardContent.className = 'card-content';
+                
+                // Crear imagen en lugar de emoji
+                const cardImage = document.createElement('img');
+                cardImage.className = 'card-image';
+                cardImage.src = card.product.image;
+                cardImage.alt = card.product.name;
+                
+                cardContent.appendChild(cardImage);
+                cardElement.appendChild(cardContent);
+                cardElement.addEventListener('click', () => flipCard(cardElement));
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        // Voltear una carta
+        function flipCard(card) {
+            if (!gameConfig.gameActive) return;
+            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            if (gameConfig.flippedCards.length >= 2) return;
+            
+            // Reproducir sonido de clic
+            playSound(clickSound);
+            
+            card.classList.add('flipped');
+            gameConfig.flippedCards.push(card);
+            
+            if (gameConfig.flippedCards.length === 2) {
+                gameConfig.gameActive = false;
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        // Comprobar si las cartas coinciden
+        function checkMatch() {
+            const [card1, card2] = gameConfig.flippedCards;
+            const isMatch = card1.dataset.product === card2.dataset.product;
+            
+            if (isMatch) {
+                // Reproducir sonido de acierto
+                playSound(matchSound);
+                
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                gameConfig.matchedPairs++;
+                gameConfig.pairsFound++;
+                pairsFoundDisplay.textContent = gameConfig.pairsFound;
+                updateProgressBar();
+                
+                // Mostrar dato nutricional en el panel lateral
+                const product = venezuelanProducts.find(p => p.name === card1.dataset.product);
+                if (product && !gameConfig.discoveredFacts.has(product.name)) {
+                    addFactToSidebar(product);
+                    gameConfig.discoveredFacts.add(product.name);
+                }
+                
+                // Comprobar si se completó el nivel
+                if (gameConfig.matchedPairs === gameConfig.totalPairs) {
+                    setTimeout(levelComplete, 1000);
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+            }
+            
+            gameConfig.flippedCards = [];
+            gameConfig.gameActive = true;
+        }
+
+        // Añadir dato nutricional al panel lateral
+        function addFactToSidebar(product) {
+            // Eliminar el mensaje de "no hay datos" si existe
+            const noFacts = factsContainer.querySelector('.no-facts');
+            if (noFacts) {
+                noFacts.remove();
+            }
+            
+            const factElement = document.createElement('div');
+            factElement.className = 'fact-item';
+            factElement.innerHTML = `
+                <div class="fact-header">
+                    <span class="fact-emoji">${product.emoji}</span>
+                    <span class="fact-name">${product.name}</span>
+                </div>
+                <p class="fact-text">${product.fact}</p>
+                <div class="nutrition-tag">${product.nutrition}</div>
+            `;
+            
+            factsContainer.prepend(factElement);
+            
+            // Hacer scroll al nuevo elemento
+            setTimeout(() => {
+                factElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        // Controlar scroll del panel de datos nutricionales
+        function scrollFacts(direction) {
+            const container = factsContainer;
+            const scrollAmount = 120;
+            
+            if (direction === 'up') {
+                container.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+            } else {
+                container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        // Actualizar barra de progreso
+        function updateProgressBar() {
+            const progress = (gameConfig.matchedPairs / gameConfig.totalPairs) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Nivel completado
+        function levelComplete() {
+            if (gameConfig.currentLevel < gameConfig.maxLevels) {
+                gameConfig.currentLevel++;
+                currentLevelDisplay.textContent = gameConfig.currentLevel;
+                setupGameBoard();
+            } else {
+                // Juego completado - mostrar felicitaciones
+                showCongratulations();
+            }
+        }
+
+        // Mostrar pantalla de felicitaciones
+        function showCongratulations() {
+            // Reproducir sonido de completado
+            playSound(completeSound);
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            
+            const congrats = document.createElement('div');
+            congrats.className = 'congratulations';
+            congrats.innerHTML = `
+                <h2>¡Felicidades ${gameConfig.playerName}!</h2>
+                <p>Has completado todos los niveles del juego.</p>
+                <p>Total de pares encontrados: <strong>${gameConfig.pairsFound}</strong></p>
+                <p>Beneficios nutricionales descubiertos: <strong>${gameConfig.discoveredFacts.size}</strong></p>
+                <button onclick="closeCongratulations()" class="success">Continuar</button>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(congrats);
+            
+            // Agregar efecto de confeti
+            createConfetti();
+        }
+        
+        // Crear efecto de confeti
+        function createConfetti() {
+            const colors = ['#4caf50', '#8bc34a', '#cddc39', '#ffb74d'];
+            const overlay = document.querySelector('.overlay');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.width = Math.random() * 15 + 5 + 'px';
+                confetti.style.height = Math.random() * 15 + 5 + 'px';
+                overlay.appendChild(confetti);
+            }
+        }
+        
+        // Cerrar pantalla de felicitaciones
+        function closeCongratulations() {
+            const overlay = document.querySelector('.overlay');
+            const congrats = document.querySelector('.congratulations');
+            
+            if (overlay) overlay.remove();
+            if (congrats) congrats.remove();
+            
+            saveScore();
+            showMainMenu();
+        }
+
+        // Reiniciar el juego
+        function resetGame() {
+            gameConfig.pairsFound -= gameConfig.matchedPairs;
+            setupGameBoard();
+        }
+
+        // Guardar puntuación
+        function saveScore() {
+            const existingPlayerIndex = leaderboard.findIndex(item => item.name === gameConfig.playerName);
+            
+            if (existingPlayerIndex !== -1) {
+                // Actualizar si tiene mejor puntuación
+                if (gameConfig.pairsFound > leaderboard[existingPlayerIndex].pairs) {
+                    leaderboard[existingPlayerIndex].level = gameConfig.currentLevel;
+                    leaderboard[existingPlayerIndex].pairs = gameConfig.pairsFound;
+                }
+            } else {
+                // Agregar nuevo jugador
+                leaderboard.push({
+                    name: gameConfig.playerName,
+                    level: gameConfig.currentLevel,
+                    pairs: gameConfig.pairsFound
+                });
+            }
+            
+            // Ordenar leaderboard
+            leaderboard.sort((a, b) => {
+                if (b.level !== a.level) return b.level - a.level;
+                return b.pairs - a.pairs;
+            });
+            
+            // Guardar en localStorage
+            localStorage.setItem('nutrimemoriaLeaderboard', JSON.stringify(leaderboard));
+            updateLeaderboard();
+        }
+
+        // Mostrar menú principal
+        function showMainMenu() {
+            saveScore();
+            gameScreen.classList.remove('active');
+            registerScreen.classList.add('active');
+        }
+
+        // Actualizar leaderboard
+        function updateLeaderboard() {
+            leaderboardList.innerHTML = "";
+            
+            if (leaderboard.length === 0) {
+                leaderboardList.innerHTML = "<p class='leaderboard-item'>No hay puntuaciones aún</p>";
+                return;
+            }
+            
+            leaderboard.slice(0, 5).forEach(player => {
+                const item = document.createElement('div');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <span>${player.name}</span>
+                    <span>Nivel: ${player.level}, Pares: ${player.pairs}</span>
+                `;
+                leaderboardList.appendChild(item);
+            });
+        }
+
+        // Utilidades
+        function getRandomProducts(count) {
+            const shuffled = shuffleArray([...venezuelanProducts]);
+            return shuffled.slice(0, count);
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Hacer las funciones globales para que funcionen con los onclick
+        window.closeCongratulations = closeCongratulations;
+        window.scrollFacts = scrollFacts;
+
+        // Inicializar el juego cuando se carga la página
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registrado correctamente.'))
+      .catch(err => console.log('Error al registrar el Service Worker:', err));
+  });
+}
+</script>
+</body>
+</html>
